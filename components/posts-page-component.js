@@ -3,13 +3,13 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
-  // TODO: реализовать рендер постов из api
-  console.log("Актуальный список постов:", posts);
+  // TODO: реализовать рендер постов из api - done
 
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
+
   const appHtml = posts
     .map((post, index) => ` 
     <div class="page-container">
@@ -28,7 +28,7 @@ export function renderPostsPageComponent({ appEl }) {
             <img src="./assets/images/like-active.svg">
           </button>
           <p class="post-likes-text">
-            Нравится: <strong>${post.likes.length}</strong>
+            Нравится: <strong>${post.likes.length > 1 ? `${post.likes[0].name} и ещё ${post.likes.length - 1}` : `${post.likes.name}`}</strong>
           </p>
         </div>
         <p class="post-text">
