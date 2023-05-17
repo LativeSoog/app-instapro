@@ -1,5 +1,6 @@
 import { addPost } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
+import { renderUploadImageComponent } from "./upload-image-component.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick, token }) {
   const render = () => {
@@ -29,6 +30,17 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick, token }) {
       element: document.querySelector(".header-container"),
     });
 
+    let imageUrl = "";
+    const uploadPhotoContainer = document.querySelector(".upload-image-container")
+    if (uploadPhotoContainer) {
+      renderUploadImageComponent({
+        element: appEl.querySelector(".upload-image-container"),
+        onImageUrlChange(newImageUrl) {
+          imageUrl = newImageUrl;
+        },
+      });
+    }
+
 
     document.getElementById("add-button").addEventListener("click", () => {
       let description = document.getElementById("description").value
@@ -36,13 +48,13 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick, token }) {
       addPost({
         token: tokens,
         description: description,
-        imageUrl: "https://storage.yandexcloud.net/skypro-webdev-homework-bucket/1684177127125-kartinka_sinego_iz_raduzhnyh_druzej_001516.jpg"
+        imageUrl: imageUrl,
       })
 
 
       onAddPostClick({
         description: description,
-        imageUrl: "https://storage.yandexcloud.net/skypro-webdev-homework-bucket/1684177127125-kartinka_sinego_iz_raduzhnyh_druzej_001516.jpg",
+        imageUrl: imageUrl,
       });
     });
   };
