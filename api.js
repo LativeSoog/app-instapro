@@ -105,3 +105,17 @@ export function userPosts({ token, id }) {
       return data.posts;
     });
 }
+
+//API like
+
+export function likePost() {
+  return fetch(postsHost + `/${id}/` + "like", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      response.json()
+    })
+}
