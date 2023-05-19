@@ -7,6 +7,7 @@ export function renderUserPostsPageComponent({ appEl }) {
         .map((post, index) => ` 
         <div class="page-container">
         <div class="header-container"></div>
+        <div class="posts-user-header"></div>
         <ul class="posts">
           <li class="post">
             <div class="post-image-container">
@@ -37,6 +38,18 @@ export function renderUserPostsPageComponent({ appEl }) {
     renderHeaderComponent({
         element: document.querySelector(".header-container"),
     });
+
+    function renderPostUserHeader({ element }) {
+        element.innerHTML = `
+        <div class="posts-user-header">
+        <img src="${posts[0].user.imageUrl}" class="posts-user-header__user-image">
+        <p class="posts-user-header__user-name">Публикации пользователя ${posts[0].user.name}</p>
+    </div>
+      `;
+        return element;
+    }
+
+    renderPostUserHeader({
+        element: document.querySelector(".posts-user-header")
+    })
 }
-
-
