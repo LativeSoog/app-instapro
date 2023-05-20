@@ -58,13 +58,19 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick, token }) {
 
       addPost({
         token: tokens,
-        description: description,
+        description: description
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll("/", "&frasl;"),
         imageUrl: imageUrl,
       })
 
 
       onAddPostClick({
-        description: description,
+        description: description
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll("/", "&frasl;"),
         imageUrl: imageUrl,
       });
     });
