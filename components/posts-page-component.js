@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, likeUserPost, user } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api - done
@@ -25,7 +25,7 @@ export function renderPostsPageComponent({ appEl }) {
         </div>
         <div class="post-likes">
           <button data-post-id="${post.id}" class="like-button">
-            <img src="./assets/images/like-active.svg">
+           ${post.isLiked ? '<img src="./assets/images/like-active.svg">' : '<img src="./assets/images/like-not-active.svg">'}
           </button>
           <p class="post-likes-text">
             Нравится: <strong>${post.likes.length === 0 ? `0` : `${post.likes.length >= 2 ? `${post.likes[0].name} и ещё ${post.likes.length - 1}` : `${post.likes[0].name}`}`}</strong>
@@ -55,5 +55,15 @@ export function renderPostsPageComponent({ appEl }) {
         userId: userEl.dataset.userId,
       });
     });
+  }
+
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener("click", () => {
+      if (!user) {
+        alert("Ставить Like могут только авторизованные пользователи")
+        return;
+      }
+      likeUserPost({ postId: likeEl.dataset.postId })
+    })
   }
 }

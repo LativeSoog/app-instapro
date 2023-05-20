@@ -1,4 +1,4 @@
-import { posts } from "../index.js";
+import { likeUserPost, posts, user } from "../index.js";
 import { renderHeaderComponent } from "./header-component.js";
 
 export function renderUserPostsPageComponent({ appEl }) {
@@ -15,7 +15,7 @@ export function renderUserPostsPageComponent({ appEl }) {
             </div>
             <div class="post-likes">
               <button data-post-id="${post.id}" class="like-button">
-                <img src="./assets/images/like-active.svg">
+              ${post.isLiked ? '<img src="./assets/images/like-active.svg">' : '<img src="./assets/images/like-not-active.svg">'}
               </button>
               <p class="post-likes-text">
               Нравится: <strong>${post.likes.length === 0 ? `0` : `${post.likes.length >= 2 ? `${post.likes[0].name} и ещё ${post.likes.length - 1}` : `${post.likes[0].name}`}`}</strong>
@@ -52,4 +52,14 @@ export function renderUserPostsPageComponent({ appEl }) {
   renderPostUserHeader({
     element: document.querySelector(".posts-user-header")
   })
+
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener("click", () => {
+      if (!user) {
+        alert("Ставить Like могут только авторизованные пользователи")
+        return;
+      }
+      likeUserPost({ postId: likeEl.dataset.postId })
+    })
+  }
 }

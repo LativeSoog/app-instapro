@@ -1,4 +1,4 @@
-import { getPosts, userPosts } from "./api.js";
+import { dislikePost, getPosts, likePost, userPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -31,6 +31,26 @@ export const logout = () => {
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
 };
+
+export const likeUserPost = ({ postId }) => {
+  const index = posts.findIndex((post) => post.id === postId)
+
+  if (posts[index].isLiked) {
+    dislikePost({ token: getToken(), id: postId })
+      .then((response) => {
+        posts[index].likes = response.post.likes;
+        posts[index].isLiked = false;
+        renderApp()
+      })
+  } else {
+    likePost({ token: getToken(), id: postId })
+      .then((response) => {
+        posts[index].likes = response.post.likes;
+        posts[index].isLiked = true;
+        renderApp()
+      })
+  }
+}
 
 /**
  * Включает страницу приложения
@@ -70,7 +90,7 @@ export const goToPage = (newPage, data) => {
     if (newPage === USER_POSTS_PAGE) {
       page = LOADING_PAGE
       renderApp()
-      // TODO: реализовать получение постов юзера из API
+      // TODO: реализовать получение постов юзера из API - done
       console.log("Открываю страницу пользователя: ", data.userId);
       let id = data.userId;
       return userPosts({ token: getToken(), id })
@@ -118,9 +138,10 @@ const renderApp = () => {
       token: getToken(),
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        // TODO: реализовать добавление поста в API
+        // TODO: реализовать добавление поста в API - done
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
+        renderApp()
       },
     });
   }
@@ -132,7 +153,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользвателя
+    // TODO: реализовать страницу фотографию пользвателя - done
     return renderUserPostsPageComponent({ appEl })
   }
 };
