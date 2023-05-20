@@ -2,9 +2,9 @@ import { posts } from "../index.js";
 import { renderHeaderComponent } from "./header-component.js";
 
 export function renderUserPostsPageComponent({ appEl }) {
-    // TODO: реализовать рендер постов из api - done
-    const appHtml = posts
-        .map((post, index) => ` 
+  // TODO: реализовать рендер постов из api - done
+  const appHtml = posts
+    .map((post, index) => ` 
         <div class="page-container">
         <div class="header-container"></div>
         <div class="posts-user-header"></div>
@@ -18,7 +18,7 @@ export function renderUserPostsPageComponent({ appEl }) {
                 <img src="./assets/images/like-active.svg">
               </button>
               <p class="post-likes-text">
-                Нравится: <strong>${post.likes.length > 1 ? `${post.likes[0].name} и ещё ${post.likes.length - 1}` : `${post.likes.name}`}</strong>
+              Нравится: <strong>${post.likes.length === 0 ? `0` : `${post.likes.length >= 2 ? `${post.likes[0].name} и ещё ${post.likes.length - 1}` : `${post.likes[0].name}`}`}</strong>
               </p>
             </div>
             <p class="post-text">
@@ -31,25 +31,25 @@ export function renderUserPostsPageComponent({ appEl }) {
           </li>
             </div>
             </div>`).join("")
-        ;
+    ;
 
-    appEl.innerHTML = appHtml;
+  appEl.innerHTML = appHtml;
 
-    renderHeaderComponent({
-        element: document.querySelector(".header-container"),
-    });
+  renderHeaderComponent({
+    element: document.querySelector(".header-container"),
+  });
 
-    function renderPostUserHeader({ element }) {
-        element.innerHTML = `
+  function renderPostUserHeader({ element }) {
+    element.innerHTML = `
         <div class="posts-user-header">
         <img src="${posts[0].user.imageUrl}" class="posts-user-header__user-image">
-        <p class="posts-user-header__user-name">Публикации пользователя ${posts[0].user.name}</p>
+        <p class="posts-user-header__user-name">Публикации пользователя <strong>${posts[0].user.name}</strong></p>
     </div>
       `;
-        return element;
-    }
+    return element;
+  }
 
-    renderPostUserHeader({
-        element: document.querySelector(".posts-user-header")
-    })
+  renderPostUserHeader({
+    element: document.querySelector(".posts-user-header")
+  })
 }
