@@ -82,7 +82,11 @@ export function addPost({ token, imageUrl, description }) {
     })
   })
     .then((response) => {
-      return response.json()
+      if (response.status === 400) {
+        throw new Error("Проверьте указанные данные")
+      } else {
+        return response.json()
+      }
     })
 }
 

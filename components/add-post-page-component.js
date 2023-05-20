@@ -45,6 +45,17 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick, token }) {
     document.getElementById("add-button").addEventListener("click", () => {
       let description = document.getElementById("description").value
       let tokens = token;
+
+      if (!description) {
+        alert("Введите описание к фотографии")
+        return;
+      }
+
+      if (!imageUrl) {
+        alert("Загрузите фотографию")
+        return;
+      }
+
       addPost({
         token: tokens,
         description: description,
