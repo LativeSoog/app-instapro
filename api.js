@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "vitaliy-gusev";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -67,4 +67,83 @@ export function uploadImage({ file }) {
   }).then((response) => {
     return response.json();
   });
+}
+
+//API добавление поста
+export function addPost({ token, imageUrl, description }) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      imageUrl,
+      description,
+    })
+  })
+    .then((response) => {
+      if (response.status === 400) {
+        throw new Error("Проверьте указанные данные")
+      } else {
+        return response.json()
+      }
+    })
+}
+
+//API user posts
+export function userPosts({ token, id }) {
+  return fetch(postsHost + "/user-posts/" + id, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+}
+
+//API like
+export function likePost({ token, id }) {
+  return fetch(postsHost + `/${id}/` + "like", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      if (response.status === 400) {
+        throw new Error("Вы не авторизованы в системе")
+      } else if (response.status === 500) {
+        throw new Error("Ошибка сервера, попробуйте позже")
+      } else {
+        return response.json()
+      }
+    })
+}
+
+//API dislike
+export function dislikePost({ token, id }) {
+  return fetch(postsHost + `/${id}/` + "dislike", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      if (response.status === 400) {
+        throw new Error("Вы не авторизованы в системе")
+      } else if (response.status === 500) {
+        throw new Error("Ошибка сервера, попробуйте позже")
+      } else {
+        return response.json()
+      }
+    })
 }
